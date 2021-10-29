@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Numeral_System_Translator
 {
@@ -20,16 +21,43 @@ namespace Numeral_System_Translator
     {
         static void Main(string[] args)
         {
-            string Number = "8B,1D";
-            int toBase = 8;
-            int fromBase = 16;
-            int accuracy = 9;
+            Stopwatch stopwatch = new Stopwatch();
+
+            string Number = "5786734539,17943197621";
+            int toBase = 1;
+            int fromBase = 10;
+            int accuracy = 1000;
+            stopwatch.Start();
             string Answer = Any_To_Any(Number, toBase, fromBase, accuracy);
+            stopwatch.Stop();
             Console.WriteLine(Answer);
+            Console.WriteLine("Elapsed Time is {0} ms", stopwatch.ElapsedMilliseconds);
         }
 
+        /// <summary>Converts numbers from any numeral system between 2 and 16. </summary>
+        /// <returns> Will return Number itself if toBase is equal fromBase. Will return "Error" if  toBase or fromBase is less than 2 or bigger than 16</returns>
         private static string Any_To_Any(string Number, int toBase, int fromBase, int accuracy)
         {
+
+            //// Check for mistakes in input ////
+            if (toBase == fromBase)
+                return Number;
+
+            if (toBase < 2 | fromBase < 2 | toBase > 16 | fromBase > 16)
+                return "Error";
+
+            foreach (char ch in Number)
+            {
+                string tmp_s1 = ch.ToString();
+                if (tmp_s1 != ",")
+                {
+                    int tmp_i = int.Parse(tmp_s1, System.Globalization.NumberStyles.HexNumber);
+                    if (tmp_i > fromBase)
+                        return ($"This is not {fromBase} based number");
+                }
+            }
+
+            //// Code itself ////
             string value1;
             string value2 = null;
 
@@ -67,7 +95,7 @@ namespace Numeral_System_Translator
             {
                 foreach (char ch in numBeforeFloat)
                 {
-                    tmp_s = tmp_s + numBeforeFloat;
+                    tmp_s = tmp_s + ch;
                 }
             }
 
@@ -124,7 +152,7 @@ namespace Numeral_System_Translator
                 {
                     foreach (char ch in numAfterFloat)
                     {
-                        tmp_s = tmp_s + numAfterFloat;
+                        tmp_s = tmp_s + ch;
                     }
                 }
 
