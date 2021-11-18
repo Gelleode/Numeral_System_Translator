@@ -24,7 +24,7 @@ namespace Numeral_System_Translator
             Stopwatch stopwatch = new Stopwatch();
 
             string Number = "5786734539,17943197621";
-            int toBase = 1;
+            int toBase = 2;
             int fromBase = 10;
             int accuracy = 1000;
             stopwatch.Start();
